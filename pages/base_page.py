@@ -69,5 +69,8 @@ class BasePage:
     def _scroll_to_element(self, locator):
         element = self._find_element(locator)
         self._driver.execute_script("arguments[0].scrollIntoView();", element)
+        WebDriverWait(self._driver, 10000).until(
+            EC.visibility_of(element)
+        )
         return element
 
