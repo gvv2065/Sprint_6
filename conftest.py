@@ -8,6 +8,6 @@ from selenium.webdriver.chrome.service import Service
 
 @pytest.fixture(scope="function")
 def driver():
-    driver = webdriver.Chrome()
+    driver = webdriver.Firefox()
     yield driver
     driver.quit()

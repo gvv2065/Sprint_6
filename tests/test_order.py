@@ -1,0 +1,53 @@
+import pytest
+import allure
+from pages.order_page import OrderPage
+from models.Order import Order
+
+
+@allure.feature("Страница заказа самоката")
+class TestOrder:
+    
+    @pytest.fixture
+    def page(self, driver):
+        """Фикстура для создания объекта страницы логина"""
+        return OrderPage(driver)
+    
+    order_data = [
+        (
+            Order() 
+                .set_first_name("Иван")
+                .set_last_name("Ясногорский")
+                .set_address("ул. Ленина д.125 кв.75")
+                .set_subway_station("Беляево")
+                .set_phone("89264445566")
+                .set_rent_duration(Order.Duration.FOUR_DAYS)
+                .set_color(Order.Color.grey)
+        ),
+        (
+            Order() 
+                .set_first_name("Петр")
+                .set_last_name("Петров")
+                .set_address("пр. Мира 10")
+                .set_subway_station("ВДНХ")
+                .set_rent_duration(Order.Duration.TWO_DAYS)
+                .set_phone("89151234567")
+        )
+    ]
+    
+    @allure.title("Позитивный сценарий заказа самоката")
+    @pytest.mark.parametrize("order_info", order_data)
+    def test_positive_order_scooter(self, page: OrderPage, order_info: Order):
+        page.load_page()
+        page.fill_first_name(order_info.get_first_name())
+        page.fill_last_name(order_info.get_last_name())
+        page.fill_address(order_info.get_address())
+        page.fill_subway_station_name(order_info.get_subway_station())
+        page.fill_phone(order_info.get_phone())
+        page.click_btn_next()
+        page.fill_delivery_date_as_tomorrow()
+        page.fill_rent_duration(order_info.get_rent_duration())
+        page.fill_color(order_info.get_color())
+        page.fill_comment(order_info.get_comment())
+        page.click_btn_order_finish()
+        page.click_btn_submit_order()
+        assert page.assert_modal_order_confirmed()

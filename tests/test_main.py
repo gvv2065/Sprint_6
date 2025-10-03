@@ -1,10 +1,10 @@
 import pytest
 import allure
-from ..pages.main_page import MainPage
-from ..data import Url
+from pages.main_page import MainPage
+from data import Url
 
 
-@allure.feature("Login")
+@allure.feature("Главная страница")
 class TestMain:
     
     @pytest.fixture
