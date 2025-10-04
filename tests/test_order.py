@@ -1,16 +1,12 @@
 import pytest
 import allure
 from pages.order_page import OrderPage
+from pages.main_page import MainPage
 from models.Order import Order
 
 
 @allure.feature("Страница заказа самоката")
 class TestOrder:
-    
-    @pytest.fixture
-    def page(self, driver):
-        """Фикстура для создания объекта страницы логина"""
-        return OrderPage(driver)
     
     order_data = [
         (
@@ -21,7 +17,8 @@ class TestOrder:
                 .set_subway_station("Беляево")
                 .set_phone("89264445566")
                 .set_rent_duration(Order.Duration.FOUR_DAYS)
-                .set_color(Order.Color.grey)
+                .set_color(Order.Color.grey),
+            True
         ),
         (
             Order() 
@@ -30,14 +27,16 @@ class TestOrder:
                 .set_address("пр. Мира 10")
                 .set_subway_station("ВДНХ")
                 .set_rent_duration(Order.Duration.TWO_DAYS)
-                .set_phone("89151234567")
+                .set_phone("89151234567"),
+            False
         )
     ]
     
     @allure.title("Позитивный сценарий заказа самоката")
-    @pytest.mark.parametrize("order_info", order_data)
-    def test_positive_order_scooter(self, page: OrderPage, order_info: Order):
-        page.load_page()
+    @pytest.mark.parametrize("order_info, is_header_button", order_data)
+    def test_positive_order_scooter(self, driver, order_info: Order, is_header_button: bool):
+        page = MainPage(driver)
+        page.open_order_page(is_header_button)
         page.fill_first_name(order_info.get_first_name())
         page.fill_last_name(order_info.get_last_name())
         page.fill_address(order_info.get_address())
@@ -53,11 +52,13 @@ class TestOrder:
         assert page.assert_modal_order_confirmed()
         
     @allure.title("При клике на лого самоката открывается главная страница")   
-    def test_navigation_logo_scooter(self, page: OrderPage):
+    def test_navigation_logo_scooter(self, driver):
+        page = OrderPage(driver)
         page.load_page()
         assert page.assert_navigation_logo_scooter()
     
     @allure.title("При клике на лого яндекса - перекидывает на страницу дзена")   
-    def test_navigation_logo_yandex(self, page: OrderPage):
+    def test_navigation_logo_yandex(self, driver):
+        page = OrderPage(driver)
         page.load_page()
         assert page.assert_navigation_logo_yandex()

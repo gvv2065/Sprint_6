@@ -6,20 +6,16 @@ from data import Url
 
 @allure.feature("Главная страница")
 class TestMain:
-    
-    @pytest.fixture
-    def main_page(self, driver):
-        """Фикстура для создания объекта страницы логина"""
-        return MainPage(driver)
-    
     @allure.title("Успешный переход на форму заказа из кнопки в заголовке")
-    def test_order_btn_header_click_is_open_order_page(self, main_page):
+    def test_order_btn_header_click_is_open_order_page(self, driver):
+        main_page = MainPage(driver)
         main_page.load_page()
         main_page.click_order_btn_header()
         main_page.assert_current_page_url(Url.ORDER_PAGE)
     
     @allure.title("Успешный переход на форму заказа из кнопки внизу страницы")
-    def test__order_btn_header_click_is_open_order_page(self, main_page):
+    def test__order_btn_header_click_is_open_order_page(self, driver):
+        main_page = MainPage(driver)
         main_page.load_page()
         main_page.click_order_btn_footer()
         main_page.assert_current_page_url(Url.ORDER_PAGE)
@@ -36,6 +32,7 @@ class TestMain:
     ]
     @pytest.mark.parametrize("expected_question, expected_answer", faq_data)
     @allure.title("Проверка что FAQ при нажатии на вопрос открывается ожидаемый ответ")
-    def test_faq_component_question_click_will_expand_expected_answer(self, expected_question, expected_answer, main_page):
+    def test_faq_component_question_click_will_expand_expected_answer(self, expected_question, expected_answer, driver):
+        main_page = MainPage(driver)
         main_page.load_page()
         main_page.assert_question(expected_question, expected_answer)

@@ -27,6 +27,13 @@ class MainPage(BasePage):
         self.open_page(Url.MAIN_PAGE)
         return self
     
+    @allure.step('Переходим на страницу заказа в зависимости от типа кнопки')
+    def open_order_page(self, is_header_button):
+        if is_header_button:
+            self.click_order_btn_header()
+        else:
+            self.click_order_btn_footer()
+            
     @allure.step('Проверяем что при клике на вопрос открылся ожидаемый ответ')
     def assert_question(self, question_text, answer_text):
         self._scroll_to_element(MainPageLocators.FAQ)
