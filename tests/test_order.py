@@ -52,12 +52,12 @@ class TestOrder:
         page.click_btn_submit_order()
         assert page.assert_modal_order_confirmed()
         
-    @allure.title("Переход на главную страницу через лого самоката")   
+    @allure.title("При клике на лого самоката открывается главная страница")   
     def test_navigation_logo_scooter(self, page: OrderPage):
         page.load_page()
         assert page.assert_navigation_logo_scooter()
     
-    @allure.title("Переход на страницу дзена через лого яндекса")   
+    @allure.title("При клике на лого яндекса - перекидывает на страницу дзена")   
     def test_navigation_logo_yandex(self, page: OrderPage):
         page.load_page()
         assert page.assert_navigation_logo_yandex()

@@ -35,6 +35,7 @@ class TestMain:
         ("Я жизу за МКАДом, привезёте?", "Да, обязательно. Всем самокатов! И Москве, и Московской области.")
     ]
     @pytest.mark.parametrize("expected_question, expected_answer", faq_data)
+    @allure.title("Проверка что FAQ при нажатии на вопрос открывается ожидаемый ответ")
     def test_faq_component_question_click_will_expand_expected_answer(self, expected_question, expected_answer, main_page):
         main_page.load_page()
         main_page.assert_question(expected_question, expected_answer)

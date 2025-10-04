@@ -39,6 +39,7 @@ class BasePage:
         """
         return self._wait.until(EC.element_to_be_clickable(locator))
     
+    @allure.step('Элемент присутсвует на странице')
     def _is_element_present(self, locator, timeout=3):
         """
         Проверка наличия элемента
@@ -49,7 +50,8 @@ class BasePage:
             return True
         except TimeoutException:
             return False
-    
+        
+    @allure.step('Открываем страницу')
     def open_page(self, url):
         """
         Публичный метод открытия страницы
@@ -57,17 +59,21 @@ class BasePage:
         """
         self._driver.get(url)
     
+    @allure.step('Получаем текущую страницу')
     def get_current_url(self):
         return self._driver.current_url
     
+    @allure.step('Переходим на вкладку')
     def switch_to_tab(self, tab_index):
         self._driver.switch_to.window(self._driver.window_handles[tab_index])
     
+    @allure.step('Пороверяем текущий урл')
     def assert_current_page_url(self, expected_url):
         WebDriverWait(self._driver, 3).until(
             lambda driver: driver.current_url == expected_url
         )
 
+    @allure.step('Скроллим до элемента')
     def _scroll_to_element(self, locator):
         element = self._find_element(locator)
         self._driver.execute_script("arguments[0].scrollIntoView();", element)
@@ -76,31 +82,37 @@ class BasePage:
         )
         return element
     
+    @allure.step('Заполняем поле')
     def _fill_input(self, locator, value):
         element = self._find_element(locator)
         element.send_keys(value)
         return self
     
+    @allure.step('Заполняем дату')
     def _fill_input_date(self, locator, value):
         element = self._find_element(locator)
         element.send_keys(value)
         element.send_keys(Keys.ESCAPE)
         return self
     
+    @allure.step('Заполняем поисковое поле и выбираем из списка')
     def _fill_search(self, locator, value):
         self._find_element(locator).send_keys(value)
         self._find_element(BaseLocators.get_search_locator(value)).click()
         return self
     
+    @allure.step('Выбираем из списка')
     def _fill_select(self, locator, value):
         self._find_element(locator).click()
         self._find_element(BaseLocators.get_option_locator(value)).click()
         return self
     
+    @allure.step('Заполняем чекбокс')
     def _fill_checkbox(self, checkbox_group_name, value):
         self._find_element(BaseLocators.get_checkbox_locator(checkbox_group_name, value)).click()
         return self
     
+    @allure.step('Проверяем что появилось модальное окно с текстом и кнопками')
     def _assert_modal(self, modal_text, buttons_text):
         self._find_element(BaseLocators.get_modal_locator(modal_text))
         for button in buttons_text:
