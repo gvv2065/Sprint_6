@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
+from .base_locators import BaseLocators
 
-class OrderPageLocators:
+class OrderPageLocators(BaseLocators):
     """
     Локаторы для страницы заказа самоката
     """

@@ -59,9 +59,14 @@ class BasePage:
     
     def get_current_url(self):
         return self._driver.current_url
-
+    
+    def switch_to_tab(self, tab_index):
+        self._driver.switch_to.window(self._driver.window_handles[tab_index])
+    
     def assert_current_page_url(self, expected_url):
-        assert expected_url == self.get_current_url()
+        WebDriverWait(self._driver, 3).until(
+            lambda driver: driver.current_url == expected_url
+        )
 
     def _scroll_to_element(self, locator):
         element = self._find_element(locator)

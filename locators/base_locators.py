@@ -2,6 +2,9 @@ from selenium.webdriver.common.by import By
 
 
 class BaseLocators:
+    LOGO_YANDEX = (By.XPATH, "//a[contains(@class, 'LogoYandex')]")
+    LOGO_SCOOTER = (By.XPATH, "//a[contains(@class, 'LogoScooter')]")
+    
     @staticmethod
     def get_search_locator(option):
         return (By.XPATH, f"//li//div[text()='{option}']")

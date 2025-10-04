@@ -71,3 +71,14 @@ class OrderPage(BasePage):
     def assert_modal_order_confirmed(self):
         self._assert_modal("Заказ оформлен", ['Посмотреть статус'])
         return True
+    
+    def assert_navigation_logo_scooter(self):
+        self._find_clickable_element(OrderPageLocators.LOGO_SCOOTER).click()
+        self.assert_current_page_url(Url.MAIN_PAGE)
+        return True
+        
+    def assert_navigation_logo_yandex(self):
+        self._find_clickable_element(OrderPageLocators.LOGO_YANDEX).click()
+        self.switch_to_tab(-1)
+        self.assert_current_page_url(Url.DZEN)
+        return True
